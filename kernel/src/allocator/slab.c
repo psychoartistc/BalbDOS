@@ -82,6 +82,7 @@ void *kmalloc(size_t size) {
   hdr->magic = KMALLOC_MAGIC_USED;
   hdr->bucket_index = (uint32_t)idx;
 
+  klog_debug("Successfully allocated %llu bytes at 0x%p virtual", size, data);
   return data;
 }
 
@@ -110,4 +111,6 @@ void kfree(void *ptr) {
 
   *(void **)ptr = bucket->free_list;
   bucket->free_list = ptr;
+
+  klog_debug("Free'd memory block at 0x%p virtual", ptr);
 }

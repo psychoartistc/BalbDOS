@@ -55,8 +55,15 @@ void kmain(void) {
   fb_set_limine_framebuffer(framebuffer);
   fb_clear();
 
-  klog_info("Starting kernel with %d-bit on %s, welcome!\n", sizeof(void *) * 8,
-            arch_name());
+  klog_info("Starting the kernel with %d-bit on %s, welcome!",
+            sizeof(void *) * 8, arch_name());
+  printk("* Disable debug outputs by undefining ENABLE_DEBUG\n");
+  printk("* Play around with the allocator or framebuffer in kmain()\n");
+  printk("* Write cool drivers with the driver API (coming soon...)\n");
+  printk("* Shell support will be here when a proper userland is made because "
+         "kernel shells suck\n");
+  printk("* Want it faster? Feel free to contribute at "
+         "https://github.com/psychoartistc/lsd\n\n");
 
   idt_init();
   pmm_init();
@@ -68,7 +75,8 @@ void kmain(void) {
   if (!a)
     kpanic("kmalloc returned no memory");
 
-  klog_info("Allocated 64 bytes at 0x%p virtual", a);
+  kfree(a);
+  kfree(a);
 
   // int b = 1 / 0;
   // klog_info("%d", b);
