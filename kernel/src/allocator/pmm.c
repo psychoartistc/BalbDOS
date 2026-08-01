@@ -8,10 +8,7 @@
 #include <utils/printk.h>
 static pmm_node_t s_pmmHead = {0};
 static uint64_t s_pmmEntries = 0;
-// ceil() function but for integers
-static inline int page_ceil(int a, int b) {
-  return ((a) / (b) + ((a) % (b) != 0));
-}
+
 pmm_node_t *pmm_get_head() { return &s_pmmHead; }
 static inline int is_memmap_entry_available(uint32_t t) {
   return t == LIMINE_MEMMAP_USABLE || t == LIMINE_MEMMAP_ACPI_RECLAIMABLE ||
