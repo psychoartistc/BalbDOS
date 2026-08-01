@@ -16,6 +16,8 @@
           pkgs.pkgsCross.x86_64-embedded.buildPackages.gcc
           pkgs.gnumake
           pkgs.qemu
+          pkgs.nasm
+          pkgs.xorriso
         ];
       };
     };
