@@ -25,7 +25,8 @@ yay -S x86_64-elf-gcc
 make run
 ```
 ## TODO:
-- Scheduling
 - Permissions
-- Rewrite allocator
+- Driver API
+- ACPI tables
+- Time
 
