@@ -20,5 +20,12 @@ __attribute__((used,
                section(".limine_requests"))) volatile struct limine_hhdm_request
     hhdm_request = {.id = LIMINE_HHDM_REQUEST_ID, .revision = 0};
 
+__attribute__((
+    used,
+    section(
+        ".limine_requests"))) volatile struct limine_executable_address_request
+    kernel_address_request = {.id = LIMINE_EXECUTABLE_ADDRESS_REQUEST_ID,
+                              .revision = 0};
+
 __attribute__((used, section(".limine_requests_end"))) volatile uint64_t
     limine_requests_end_marker[] = LIMINE_REQUESTS_END_MARKER;

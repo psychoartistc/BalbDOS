@@ -2,6 +2,8 @@
 #include <panic.h>
 #include <stdint.h>
 
+#include <allocator/vmm.h>
+
 const char *g_exception_messages[] = {"Divide Error",
                                       "Debug",
                                       "NMI Interrupt",
@@ -57,6 +59,12 @@ void idt_set_descriptor(uint8_t vector, void *isr, uint8_t attributes) {
 }
 
 void c_exception_handler(cpu_registers_t *regs) {
+  if (regs->int_no == 14) {
+    uint64_t cr2;
+    __asm__ volatile("mov %%cr2, %0" : "=r"(cr2));
+    vmm_page_fault_handler(regs->error_code, (uintptr_t)cr2);
+    return;
+  }
   if (regs->int_no < 32) {
     const char *name = g_exception_messages[regs->int_no];
     kpanic("CPU exception: %s (at RIP 0x%p)", name, regs->rip);

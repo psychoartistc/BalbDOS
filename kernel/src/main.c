@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 #include <allocator/pmm.h>
+#include <allocator/slab.h>
+#include <allocator/vmm.h>
 #include <fb/fbtext.h>
 
 #include <io/idt.h>
@@ -58,12 +60,15 @@ void kmain(void) {
 
   idt_init();
   pmm_init();
+  vmm_init();
+  allocator_init();
 
-  //  idt_init();
+  void *a = kmalloc(64);
 
-  uintptr_t at = pmm_alloc();
-  pmm_free(at);
-  pmm_free(at);
+  if (!a)
+    kpanic("kmalloc returned no memory");
+
+  klog_info("Allocated 64 bytes at 0x%p virtual", a);
 
   // int b = 1 / 0;
   // klog_info("%d", b);
