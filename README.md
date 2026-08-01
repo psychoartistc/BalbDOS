@@ -5,7 +5,7 @@ A hobby kernel in C that I aim to improve.
 1. Install dependencies:
 #### Arch linux
 ```
-sudo pacman -S qemu-desktop xorriso make git
+sudo pacman -S qemu-desktop xorriso make git nasm
 ```
 2. Install the cross compiler (optional, because you can remove the TOOLCHAIN_PREFIX value in the Makefile)
 #### Arch linux
