@@ -17,7 +17,6 @@ exception_handler_%1:
     jmp common_exception_wrapper
 %endmacro
 
-; Generate handlers 0 to 31
 %assign i 0
 %rep 32
 

@@ -42,7 +42,9 @@ ifeq ($(TOOLCHAIN),llvm)
 endif
 
 # User controllable C flags.
-CFLAGS := -O2 -pipe -Iinclude
+CFLAGS := -O2 -pipe -Iinclude -DPRINTF_SUPPORT_DECIMAL_SPECIFIERS=0 -DPRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS=0 \
+		-UPRINTF_DISABLE_SUPPORT_FLOAT \
+		-UPRINTF_DISABLE_SUPPORT_EXPONENTIAL \
 
 # User controllable C preprocessor flags. We set none by default.
 CPPFLAGS :=
@@ -109,6 +111,9 @@ ifeq ($(ARCH),x86_64)
         -march=x86-64 \
         -mabi=sysv \
         -mno-mmx \
+				-mno-sse \
+				-mno-sse2 \
+				-mgeneral-regs-only \
         -mno-red-zone \
         -mcmodel=kernel
    # override LDFLAGS += \

@@ -58,8 +58,8 @@ void idt_set_descriptor(uint8_t vector, void *isr, uint8_t attributes) {
 
 void c_exception_handler(cpu_registers_t *regs) {
   if (regs->int_no < 32) {
-    const char *name = g_exception_messages[regs->int_no - 6];
-    kpanic("CPU exception: %s", name);
+    const char *name = g_exception_messages[regs->int_no];
+    kpanic("CPU exception: %s (at RIP 0x%p)", name, regs->rip);
   }
 }
 
@@ -74,5 +74,5 @@ void idt_init(void) {
   __asm__ volatile("lidt %0" : : "m"(g_idtr));
   __asm__ volatile("sti");
 
-  klog_ok("IDT Initialization");
+  klog_ok("IDT Initialized");
 }

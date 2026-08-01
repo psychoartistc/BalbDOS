@@ -31,6 +31,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#define PRINTF_SUPPORT_DECIMAL_SPECIFIERS 0
+#define PRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS 0
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -796,7 +799,7 @@ static int _vsnprintf(out_fct_type out, char *buffer, const size_t maxlen,
       format++;
       break;
     }
-#if defined(PRINTF_SUPPORT_FLOAT)
+#if defined(SFLOAT)
     case 'f':
     case 'F':
       if (*format == 'F')

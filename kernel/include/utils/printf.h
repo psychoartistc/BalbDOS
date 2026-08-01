@@ -43,6 +43,12 @@
 #include "printf_config.h"
 #endif
 
+#undef PRINTF_SUPPORT_FLOAT
+#undef PRINTF_SUPPORT_EXPONENTIAL
+
+#define PRINTF_SUPPORT_DECIMAL_SPECIFIERS 0
+#define PRINTF_SUPPORT_EXPONENTIAL_SPECIFIERS 0
+
 #ifdef __cplusplus
 #include <cstdarg>
 #include <cstddef>
@@ -230,5 +236,4 @@ int vfctprintf(void (*out)(char c, void *extra_arg), void *extra_arg,
 #define vprintf vprintf_
 #endif
 #endif
-
 #endif /* PRINTF_H_ */

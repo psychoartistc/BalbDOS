@@ -3,7 +3,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <allocator/kmalloc.h>
 #include <allocator/pmm.h>
 #include <fb/fbtext.h>
 
@@ -57,17 +56,14 @@ void kmain(void) {
   klog_info("Starting kernel with %d-bit on %s, welcome!\n", sizeof(void *) * 8,
             arch_name());
 
-  pmm_init();
   idt_init();
-  void *a = kmalloc(PAGE_SIZE);
-  if (!a) {
-    klog_error("Out of memory");
-    halt_catchfire();
-  }
+  pmm_init();
 
-  klog_info("Allocated 1 page (size %llu bytes) at 0x%p", PAGE_SIZE, a);
-  kfree(a);
-  klog_info("Free'd page at 0x%p", a);
+  //  idt_init();
+
+  uintptr_t at = pmm_alloc();
+  pmm_free(at);
+  pmm_free(at);
 
   // int b = 1 / 0;
   // klog_info("%d", b);
