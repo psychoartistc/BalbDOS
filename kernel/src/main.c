@@ -61,6 +61,7 @@ void kmain(void) {
   printk("* Disable debug outputs by undefining ENABLE_DEBUG\n");
   printk("* Play around with the allocator or framebuffer in kmain()\n");
   printk("* Write cool drivers with the driver API\n");
+  printk("* Enable blue terminal theme by enabling the FB_BLUE_THEME macro\n");
   printk("* Shell support will be here when a proper userland is made because "
          "kernel shells suck\n");
   printk("* Want it faster? Feel free to contribute at "

@@ -4,6 +4,7 @@
 static uintptr_t s_freelistHead;
 static uintptr_t s_freelistTail;
 static size_t s_freelistSize;
+static size_t s_totalMemAvailable;
 
 static inline int div_ceil(int a, int b) { return (a + b - 1) / b; }
 static inline int div_floor(int a, int b) { return a / b; /* duh */ }
@@ -91,6 +92,8 @@ static void bitmap_init() {
 static void pmm_claim_pages(pmm_filter_function filter) {
   for (size_t i = 0; i < memmap_request.response->entry_count; i++) {
     struct limine_memmap_entry *entry = memmap_request.response->entries[i];
+    s_totalMemAvailable += entry->length;
+
     if (filter(entry) != 0)
       continue;
 
@@ -135,15 +138,19 @@ void pmm_init() {
   s_freelistHead = 0;
   s_freelistSize = 0;
   s_freelistTail = 0;
+  s_totalMemAvailable = 0;
 
   // klog_info("Initializing PMM...");
   bitmap_init();
   pmm_claim_pages(default_pmm_filter);
 
   char buffer[FORMATSIZE_BUFSIZE];
+  char buffer2[FORMATSIZE_BUFSIZE];
+  formatsize(buffer2, s_totalMemAvailable);
   formatsize(buffer, s_freelistSize * PAGE_SIZE);
-  klog_ok("PMM Initialized, +%llu new pages (%s physical memory)",
-          s_freelistSize, buffer);
+  klog_ok(
+      "PMM Initialized, +%llu new pages (%s physical memory, %s not available)",
+      s_freelistSize, buffer, buffer2);
 }
 
 uintptr_t pmm_get_freelist_head() { return s_freelistHead; }
