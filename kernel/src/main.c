@@ -16,31 +16,6 @@
 #include <utils/memory.h>
 #include <utils/printk.h>
 
-const char *mchunk_type_to_str(uint32_t t) {
-  switch (t) {
-  case LIMINE_MEMMAP_USABLE:
-    return "Usable";
-  case LIMINE_MEMMAP_RESERVED:
-    return "Reserved";
-  case LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE:
-    return "Reclaimable bootloader memory";
-  case LIMINE_MEMMAP_EXECUTABLE_AND_MODULES:
-    return "Kernel memory";
-  case LIMINE_MEMMAP_ACPI_RECLAIMABLE:
-    return "Reclaimable ACPI tables";
-  case LIMINE_MEMMAP_BAD_MEMORY:
-    return "Bad memory";
-  case LIMINE_MEMMAP_ACPI_NVS:
-    return "ACPI NVS";
-  case LIMINE_MEMMAP_FRAMEBUFFER:
-    return "Framebuffer";
-  case LIMINE_MEMMAP_RESERVED_MAPPED:
-    return "Reserved mapped";
-  default:
-    return "(Unusable)";
-  }
-}
-
 void kmain(void) {
   kassert(LIMINE_BASE_REVISION_SUPPORTED(limine_base_revision) != false);
   kassert(framebuffer_request.response != NULL &&
