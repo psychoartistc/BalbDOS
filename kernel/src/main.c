@@ -60,7 +60,7 @@ void kmain(void) {
             sizeof(void *) * 8, arch_name());
   printk("* Disable debug outputs by undefining ENABLE_DEBUG\n");
   printk("* Play around with the allocator or framebuffer in kmain()\n");
-  printk("* Write cool drivers with the driver API (coming soon...)\n");
+  printk("* Write cool drivers with the driver API\n");
   printk("* Shell support will be here when a proper userland is made because "
          "kernel shells suck\n");
   printk("* Want it faster? Feel free to contribute at "
