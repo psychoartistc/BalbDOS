@@ -215,7 +215,7 @@ void pmm_reclaim_bootloader_pages() {
 }
 
 void pmm_reclaim_acpi_pages() {
-  uintptr_t was = s_freelistSize = 0;
+  uintptr_t was = s_freelistSize;
   // klog_info("Reclaiming ACPI pages");
 
   pmm_claim_pages(acpi_pmm_filter);

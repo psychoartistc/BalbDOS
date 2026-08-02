@@ -58,7 +58,7 @@ static void output_tables() {
     else
       printk("%.4s, ", s_tables.tables[i]->signature);
   }
-  printk("]\n\n");
+  printk("]\n");
 }
 
 static void handle_xsdp(xsdp_t *xsdp) {
