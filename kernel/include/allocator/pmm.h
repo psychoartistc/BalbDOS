@@ -8,6 +8,8 @@
 
 #define PAGE_SIZE 4096
 
+#define PMM_ZERO_PAGES
+
 // physical to virtual address
 static inline void *p2v(uintptr_t phys) {
   return (void *)(phys + hhdm_request.response->offset);

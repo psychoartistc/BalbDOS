@@ -41,6 +41,7 @@ typedef struct kmalloc_bucket {
 void allocator_init();
 
 void *kmalloc(size_t size);
+void *krealloc(void *ptr, size_t s);
 void kfree(void *ptr);
 void *kzalloc(size_t size);
 

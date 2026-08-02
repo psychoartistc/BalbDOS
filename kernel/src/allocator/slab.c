@@ -22,6 +22,44 @@ static int find_bucket(size_t size) {
   return -1;
 }
 
+static size_t hdr_capacity(kmalloc_header_t *hdr) {
+  if (hdr->magic == KMALLOC_MAGIC_RAW)
+    return hdr->size - KMALLOC_HEADER_SIZE;
+  return s_bucket_sizes[hdr->bucket_index];
+}
+
+void *krealloc(void *ptr, size_t size) {
+  if (!ptr)
+    return kmalloc(size);
+
+  if (size == 0) {
+    kfree(ptr);
+    return NULL;
+  }
+
+  kmalloc_header_t *hdr =
+      (kmalloc_header_t *)((uint8_t *)ptr - KMALLOC_HEADER_SIZE);
+
+  if (hdr->magic == KMALLOC_MAGIC_FREE)
+    kpanic("Double free at %p", ptr);
+  kassert(
+      (hdr->magic == KMALLOC_MAGIC_USED || hdr->magic == KMALLOC_MAGIC_RAW) &&
+      "Corrupted or invalid heap pointer (bad magic)");
+
+  size_t old_capacity = hdr_capacity(hdr);
+
+  if (size <= old_capacity)
+    return ptr;
+
+  void *new_ptr = kmalloc(size);
+  if (!new_ptr)
+    return NULL;
+
+  memcpy(new_ptr, ptr, old_capacity);
+  kfree(ptr);
+  return new_ptr;
+}
+
 // grows a bucket by mapping one fresh page and slicing it into slots
 // [header (16B)][chunk_size bytes of data] threaded into the free list
 static bool bucket_grow(kmalloc_bucket_t *bucket) {

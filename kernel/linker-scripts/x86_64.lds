@@ -30,6 +30,20 @@ SECTIONS
         KEEP(*(.limine_requests_end))
     } :limine_requests
 
+
+
+.drivers : {
+    __drivers_start = .;
+    KEEP(*(.drivers))
+    __drivers_end = .;
+}
+
+.drivers.exit : {
+    __drivers_exit_start = .;
+    KEEP(*(.drivers.exit))
+    __drivers_exit_end = .;
+}
+
     /* Move to the next memory page for .text */
     . = ALIGN(CONSTANT(MAXPAGESIZE));
 

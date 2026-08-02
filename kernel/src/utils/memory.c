@@ -96,7 +96,7 @@ int formatsize(char *to, size_t bytes) {
   size_t tenth = (rem * 10) / divisor;
 
   outputted += sprintf_(to, "%zu.%zu%c", whole, tenth, units[unit]);
-
+  to[outputted] = '\0';
   return outputted;
 }
 

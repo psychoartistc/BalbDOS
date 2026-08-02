@@ -1,4 +1,5 @@
 #include <allocator/pmm.h>
+#include <utils/memory.h>
 
 static uintptr_t s_freelistHead;
 static uintptr_t s_freelistTail;
@@ -49,6 +50,10 @@ static void bitmap_bootstrap(size_t bytes) {
       continue;
 
     s_bitmap = (uint8_t *)p2v(entry->base);
+
+    // should be safe to remove in place,
+    // this is needed so bitmap regions
+    // arent claimed by the pmm
     entry->base += needed;
     entry->length -= needed;
 

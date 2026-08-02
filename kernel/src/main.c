@@ -6,6 +6,7 @@
 #include <allocator/pmm.h>
 #include <allocator/slab.h>
 #include <allocator/vmm.h>
+#include <drivers/api.h>
 #include <fb/fbtext.h>
 
 #include <io/idt.h>
@@ -72,13 +73,16 @@ void kmain(void) {
   vmm_init();
   allocator_init();
 
-  char buffer[11];
-  int a = formatsize(buffer, pmm_get_pages_count() * PAGE_SIZE);
-  buffer[a] = '\0';
-
+  char buffer[FORMATSIZE_BUFSIZE];
+  formatsize(buffer, pmm_get_pages_count() * PAGE_SIZE);
   klog_info("Total of %s physical memory available", buffer);
   // int b = 1 / 0;
-  // klog_info("%d", b);
+  // klog_info("%d", b);'
 
+  output_drivers();
+  init_drivers();
+
+cleanup:
+  cleanup_drivers();
   halt_catchfire();
 }
