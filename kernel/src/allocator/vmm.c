@@ -116,7 +116,7 @@ void vmm_map_page_2mb(vmm_pagemap_t *pm, uintptr_t virt, uintptr_t phys,
 }
 
 void vmm_init(void) {
-  klog_info("Initializing VMM...");
+  // klog_info("Initializing VMM...");
 
   uintptr_t pml4_phys = pmm_alloc();
   kassert(pml4_phys != 0 && "Failed to allocate PML4");

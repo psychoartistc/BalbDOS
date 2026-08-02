@@ -62,11 +62,12 @@ static void bitmap_bootstrap(size_t bytes) {
     return;
   }
 
-  kpanic("No usable region large enough for PMM bitmap");
+  kpanic(
+      "No usable region large enough for PMM bitmap (your computer is shit)");
 }
 
 static void bitmap_init() {
-  klog_info("Initializing PMM bitmap for double frees");
+  // klog_info("Initializing PMM bitmap for double frees");
 
   uintptr_t highest = 0;
   for (size_t i = 0; i < memmap_request.response->entry_count; i++) {
@@ -135,11 +136,14 @@ void pmm_init() {
   s_freelistSize = 0;
   s_freelistTail = 0;
 
-  klog_info("Initializing PMM...");
+  // klog_info("Initializing PMM...");
   bitmap_init();
   pmm_claim_pages(default_pmm_filter);
 
-  klog_ok("PMM Initialized, +%llu new pages", s_freelistSize);
+  char buffer[FORMATSIZE_BUFSIZE];
+  formatsize(buffer, s_freelistSize * PAGE_SIZE);
+  klog_ok("PMM Initialized, +%llu new pages (%s physical memory)",
+          s_freelistSize, buffer);
 }
 
 uintptr_t pmm_get_freelist_head() { return s_freelistHead; }
@@ -188,20 +192,20 @@ static int acpi_pmm_filter(struct limine_memmap_entry *entry) {
 void pmm_reclaim_bootloader_pages() {
   uintptr_t was = s_freelistSize;
 
-  klog_info("Reclaiming bootloader pages");
+  // klog_info("Reclaiming bootloader pages");
 
   pmm_claim_pages(bootloader_pmm_filter);
 
-  klog_ok("+%llu new pages", s_freelistSize - was);
+  klog_ok("+%llu new pages (reclaimed bootloader)", s_freelistSize - was);
 }
 
 void pmm_reclaim_acpi_pages() {
   uintptr_t was = s_freelistSize = 0;
-  klog_info("Reclaiming ACPI pages");
+  // klog_info("Reclaiming ACPI pages");
 
   pmm_claim_pages(acpi_pmm_filter);
 
-  klog_ok("+%llu new pages", s_freelistSize - was);
+  klog_ok("+%llu new pages (reclaimed ACPI)", s_freelistSize - was);
 }
 
 uintptr_t pmm_get_pages_count() { return s_freelistSize; }

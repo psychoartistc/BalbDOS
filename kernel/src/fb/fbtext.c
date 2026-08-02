@@ -1,7 +1,7 @@
 #include "font/cp866.h"
 #include <fb/fbtext.h>
 
-uint8_t (*g_font)[FBFONT_HEIGHT] = (uint8_t (*)[FBFONT_HEIGHT])g_CP866_F14;
+uint8_t (*g_font)[FBFONT_HEIGHT] = (uint8_t (*)[FBFONT_HEIGHT])g_CP866_F16;
 
 struct limine_framebuffer *g_fb = NULL;
 

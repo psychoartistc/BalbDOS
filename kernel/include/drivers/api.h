@@ -18,6 +18,8 @@
 
 #define DRVLICENSE_CC0 "CC0"
 
+#define DRVLICENSE_PROPRIETARY "Proprietary"
+
 #define DRVLICENSE_DEFAULT DRVLICENSE_GPL3
 
 typedef int (*initcall_t)(void);
@@ -55,17 +57,20 @@ typedef struct driver {
                                      .license = __driver_license,              \
                                      .init = (fn),                             \
                                      .exit = 0}
+
 #define driver_exit(fn)                                                        \
-  static const struct driver __driver_exit_entry_##fn                          \
+  static const struct driver_exit_entry __driver_exit_##fn                     \
       __attribute__((used, section(".drivers.exit"))) = {                      \
           .name = __driver_name,                                               \
-          .description = __driver_desc,                                        \
-          .version = __driver_version,                                         \
-          .license = __driver_license,                                         \
-          .init = 0,                                                           \
           .exit = (fn),                                                        \
   }
 
+struct driver_exit_entry {
+  const char *name;
+  exitcall_t exit;
+};
+
+void link_driver_callbacks();
 void output_drivers();
 void init_drivers();
 void cleanup_drivers();
@@ -73,7 +78,7 @@ void cleanup_drivers();
 extern driver_t __drivers_start[];
 extern driver_t __drivers_end[];
 
-extern driver_t __drivers_exit_start[];
-extern driver_t __drivers_exit_end[];
+extern struct driver_exit_entry __drivers_exit_start[];
+extern struct driver_exit_entry __drivers_exit_end[];
 
 #endif

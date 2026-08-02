@@ -7,10 +7,10 @@
 
 #include <font/cp866.h>
 
-// #define FB_BLUE_THEME
+#define FB_BLUE_THEME
 
 #define FBFONT_WIDTH 8
-#define FBFONT_HEIGHT 14
+#define FBFONT_HEIGHT 16
 
 extern uint8_t (*g_font)[FBFONT_HEIGHT];
 

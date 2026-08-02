@@ -73,15 +73,11 @@ void kmain(void) {
   vmm_init();
   allocator_init();
 
-  char buffer[FORMATSIZE_BUFSIZE];
-  formatsize(buffer, pmm_get_pages_count() * PAGE_SIZE);
-  klog_info("Total of %s physical memory available", buffer);
   // int b = 1 / 0;
   // klog_info("%d", b);'
 
-  output_drivers();
   init_drivers();
-
+  klog_ok("Drivers initialized");
 cleanup:
   cleanup_drivers();
   halt_catchfire();

@@ -2,6 +2,7 @@
 #include <utils/printk.h>
 
 void init_drivers() {
+  link_driver_callbacks();
   for (struct driver *d = __drivers_start; d < __drivers_end; d++) {
     if (!d->init)
       continue;
@@ -18,6 +19,23 @@ void output_drivers() {
     printk("* Driver description: \'%s\'\n", d->description);
     printk("* Driver version: %s\n", d->version);
     printk("* Driver license: %s\n", d->license);
+    printk("* Driver init handler: 0x%p\n", d->init);
+    printk("* Driver exit handler: 0x%p\n", d->exit);
+  }
+}
+
+void link_driver_callbacks() {
+  for (struct driver *d = __drivers_start; d < __drivers_end; d++) {
+    for (struct driver_exit_entry *e = __drivers_exit_start;
+         e < __drivers_exit_end; e++) {
+      // pointer comparison....
+      // should work tho because for string literals
+      // if they are same they have the same address
+      if (e->name == d->name) {
+        d->exit = e->exit;
+        break;
+      }
+    }
   }
 }
 
