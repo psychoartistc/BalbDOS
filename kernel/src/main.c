@@ -65,19 +65,18 @@ void kmain(void) {
   printk("* Want it faster? Feel free to contribute at "
          "https://github.com/psychoartistc/lsd\n\n");
 
+  // these initialization routines
+  // are crucial, so they panic on failure
   idt_init();
   pmm_init();
   vmm_init();
   allocator_init();
 
-  void *a = kmalloc(64);
+  char buffer[11];
+  int a = formatsize(buffer, pmm_get_pages_count() * PAGE_SIZE);
+  buffer[a] = '\0';
 
-  if (!a)
-    kpanic("kmalloc returned no memory");
-
-  kfree(a);
-  kfree(a);
-
+  klog_info("Total of %s physical memory available", buffer);
   // int b = 1 / 0;
   // klog_info("%d", b);
 

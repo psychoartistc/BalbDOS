@@ -27,6 +27,7 @@ typedef struct pmm_node {
 
 uintptr_t pmm_get_freelist_head();
 uintptr_t pmm_get_freelist_tail();
+uintptr_t pmm_get_pages_count();
 
 // fills the freelist
 void pmm_init();

@@ -41,7 +41,7 @@ static uint64_t *get_next_level(uint64_t *table, size_t index, bool allocate) {
     return NULL;
 
   uintptr_t frame = pmm_alloc();
-  kassert(frame != 0 && "VMM: out of physical memory for page table!");
+  kassert(frame != 0 && "Out of physical memory for page table!");
   uint64_t *newtable = (uint64_t *)p2v(frame);
   for (int i = 0; i < 512; i++)
     newtable[i] = 0;
@@ -103,9 +103,9 @@ void vmm_switch_pagemap(vmm_pagemap_t *pm) {
 void vmm_map_page_2mb(vmm_pagemap_t *pm, uintptr_t virt, uintptr_t phys,
                       uint64_t flags) {
   kassert((virt % 0x200000) == 0 &&
-          "unaligned 2MiB virtual address in vmm_map_page_2mb");
+          "unaligned 2mb virtual address in vmm_map_page_2mb");
   kassert((phys % 0x200000) == 0 &&
-          "unaligned 2MiB physical address in vmm_map_page_2mb");
+          "unaligned 2mb physical address in vmm_map_page_2mb");
 
   uint64_t *pml4 = (uint64_t *)p2v(pm->pml4_phys);
   uint64_t *pdpt = get_next_level(pml4, PML4_INDEX(virt), true);
@@ -173,8 +173,8 @@ void vmm_page_fault_handler(uint64_t error_code, uintptr_t faulting_addr) {
 
   kpanic("Page fault at 0x%llx (%s, %s, %s%s%s)", faulting_addr,
          present ? "present" : "not-present", write ? "write" : "read",
-         user ? "user" : "kernel", reserved ? ", reserved-bit-set" : "",
-         fetch ? ", instruction-fetch" : "");
+         user ? "user" : "kernel", reserved ? ", reserved bit set" : "",
+         fetch ? ", instruction fetch" : "");
 }
 
 static void *vmm_map_new_pages(uintptr_t base, size_t pages, uint64_t flags) {

@@ -1,4 +1,5 @@
 #include <allocator/slab.h>
+#include <utils/memory.h>
 
 static kmalloc_bucket_t s_buckets[KMALLOC_NUM_BUCKETS];
 
@@ -113,4 +114,14 @@ void kfree(void *ptr) {
   bucket->free_list = ptr;
 
   klog_debug("Free'd memory block at 0x%p virtual", ptr);
+}
+
+void *kzalloc(size_t size) {
+  void *ptr = kmalloc(size);
+  if (!ptr)
+    return ptr;
+
+  memset(ptr, 0, size);
+
+  return ptr;
 }

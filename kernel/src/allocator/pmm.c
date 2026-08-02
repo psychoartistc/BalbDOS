@@ -198,3 +198,5 @@ void pmm_reclaim_acpi_pages() {
 
   klog_ok("+%llu new pages", s_freelistSize - was);
 }
+
+uintptr_t pmm_get_pages_count() { return s_freelistSize; }

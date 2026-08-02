@@ -69,6 +69,37 @@ void *memcpy(void *dest, const void *src, size_t n) {
   return dest;
 }
 
+int formatsize(char *to, size_t bytes) {
+  static const char units[] = "BKMGTPE";
+  size_t value = bytes;
+  size_t unit = 0;
+  int outputted = 0;
+
+  while (value >= 1024 && unit < sizeof(units) - 2) {
+    value /= 1024;
+    unit++;
+  }
+
+  if (unit == 0) {
+    outputted += sprintf_(to, "%zuB", bytes);
+    to += outputted;
+
+    return outputted;
+  }
+
+  size_t divisor = 1;
+  for (size_t i = 0; i < unit; i++)
+    divisor *= 1024;
+
+  size_t whole = bytes / divisor;
+  size_t rem = bytes % divisor;
+  size_t tenth = (rem * 10) / divisor;
+
+  outputted += sprintf_(to, "%zu.%zu%c", whole, tenth, units[unit]);
+
+  return outputted;
+}
+
 size_t strlen(const char *str) {
   const char *p = str;
 
