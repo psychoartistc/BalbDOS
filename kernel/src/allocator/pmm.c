@@ -39,6 +39,14 @@ static void bitmap_mark_used(uintptr_t phys) {
   bitmap_clear(frame);
 }
 
+static inline int bitmap_relevant_type(uint64_t type) {
+  // any region pmm_claim_pages might eventually hand to the freelist
+  // needs to be covered by the bitmap, not just usable pages
+  return type == LIMINE_MEMMAP_USABLE ||
+         type == LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE ||
+         type == LIMINE_MEMMAP_ACPI_RECLAIMABLE;
+}
+
 static void bitmap_bootstrap(size_t bytes) {
   size_t needed = div_ceil(bytes, PAGE_SIZE) * PAGE_SIZE;
 
@@ -73,7 +81,7 @@ static void bitmap_init() {
   uintptr_t highest = 0;
   for (size_t i = 0; i < memmap_request.response->entry_count; i++) {
     struct limine_memmap_entry *entry = memmap_request.response->entries[i];
-    if (entry->type != LIMINE_MEMMAP_USABLE)
+    if (!bitmap_relevant_type(entry->type))
       continue;
 
     uintptr_t end = entry->base + entry->length;
@@ -111,7 +119,7 @@ static void pmm_claim_pages(pmm_filter_function filter) {
       node->next = 0;
 
       bitmap_mark_free(pageStart);
-      // add this to the freelist, it is possible
+      // add this page to the freelist, it is possible
       // that the freelist head may be 0
       if (s_freelistHead == 0) {
         s_freelistHead = pageStart;

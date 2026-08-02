@@ -39,4 +39,6 @@ static inline uint32_t fb_get_background_color() {
 void fb_clear();
 void fb_putchar(char c, uint32_t fg, uint32_t bg);
 void fb_puts(const char *c, uint32_t fg, uint32_t bg);
+void fb_scroll(uint32_t bg);
+
 #endif

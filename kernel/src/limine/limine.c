@@ -27,5 +27,9 @@ __attribute__((
     kernel_address_request = {.id = LIMINE_EXECUTABLE_ADDRESS_REQUEST_ID,
                               .revision = 0};
 
+__attribute__((used,
+               section(".limine_requests"))) volatile struct limine_rsdp_request
+    rsdp_request = {.id = LIMINE_RSDP_REQUEST_ID, .revision = 0};
+
 __attribute__((used, section(".limine_requests_end"))) volatile uint64_t
     limine_requests_end_marker[] = LIMINE_REQUESTS_END_MARKER;

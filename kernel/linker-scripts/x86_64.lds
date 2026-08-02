@@ -30,20 +30,6 @@ SECTIONS
         KEEP(*(.limine_requests_end))
     } :limine_requests
 
-
-
-.drivers : {
-    __drivers_start = .;
-    KEEP(*(.drivers))
-    __drivers_end = .;
-}
-
-.drivers.exit : {
-    __drivers_exit_start = .;
-    KEEP(*(.drivers.exit))
-    __drivers_exit_end = .;
-}
-
     /* Move to the next memory page for .text */
     . = ALIGN(CONSTANT(MAXPAGESIZE));
 
@@ -70,6 +56,18 @@ SECTIONS
     .data : {
         *(.data .data.*)
     } :data
+
+    .drivers : SUBALIGN(1) {
+    __drivers_start = .;
+    KEEP(*(.drivers))
+    __drivers_end = .;
+} :data
+
+.drivers.exit : SUBALIGN(1) {
+    __drivers_exit_start = .;
+    KEEP(*(.drivers.exit))
+    __drivers_exit_end = .;
+} :data
 
     /* NOTE: .bss needs to be the last thing mapped to :data, otherwise lots of */
     /* unnecessary zeros will be written to the binary. */
