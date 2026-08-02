@@ -1,5 +1,12 @@
-# LSD kernel
-A hobby kernel in C that I aim to improve.
+# My hobby kernel
+A hobby kernel in C that I aim to improve
+
+![Kernel panic test](https://files.catbox.moe/fnwimy.png)
+
+# Features
+- A slab memory allocator, virtual memory manager
+- ACPI tables driver, CPU exception handlers
+- A framebuffer console
 
 ## Running and testing
 1. Install dependencies:

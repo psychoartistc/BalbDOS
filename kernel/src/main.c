@@ -80,5 +80,7 @@ void kmain(void) {
   klog_ok("Drivers initialized");
 cleanup:
   cleanup_drivers();
+
+  kpanic("Kernel panic test");
   halt_catchfire();
 }
