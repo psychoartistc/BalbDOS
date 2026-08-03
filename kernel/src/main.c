@@ -30,7 +30,7 @@ void kmain(void) {
   printk("* Shell support will be here when a proper userland is made because "
          "kernel shells suck\n");
   printk("* Want it faster? Feel free to contribute at "
-         "https://github.com/psychoartistc/lsd\n\n");
+         "https://github.com/psychoartistc/BalbDOS\n\n");
 
   // these initialization routines
   // are crucial, so they panic on failure

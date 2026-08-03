@@ -50,7 +50,10 @@ static void output_tables() {
   if (!s_tables.tables || s_tables.table_count == 0)
     return;
 
-  printk("[ OK ] Parsed ACPI tables: [");
+  printk("[ ");
+  fb_puts("OK", 0x008000, fb_get_background_color());
+  printk(" ]");
+  printk(" Parsed ACPI tables: [");
 
   for (size_t i = 0; i < s_tables.table_count; i++) {
     if (i == s_tables.table_count - 1)

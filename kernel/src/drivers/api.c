@@ -3,6 +3,7 @@
 
 void init_drivers() {
   link_driver_callbacks();
+
   for (struct driver *d = __drivers_start; d < __drivers_end; d++) {
     if (!d->init)
       continue;
@@ -10,6 +11,8 @@ void init_drivers() {
     int result = d->init();
     if (result != 0)
       klog_error("Failed to initialize driver \"%s\", error code: %d", result);
+    else
+      klog_ok("\tDriver \"%s\" initialized successfully", d->name);
   }
 }
 
