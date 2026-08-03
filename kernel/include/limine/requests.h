@@ -12,4 +12,6 @@ extern volatile struct limine_executable_address_request kernel_address_request;
 extern volatile struct limine_rsdp_request rsdp_request;
 extern volatile uint64_t limin_requests_end_marker[];
 
+void request_asserts();
+
 #endif

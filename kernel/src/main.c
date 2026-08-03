@@ -17,18 +17,9 @@
 #include <utils/printk.h>
 
 void kmain(void) {
-  kassert(LIMINE_BASE_REVISION_SUPPORTED(limine_base_revision) != false);
-  kassert(framebuffer_request.response != NULL &&
-          framebuffer_request.response->framebuffer_count >= 1);
-  kassert(memmap_request.response != NULL &&
-          memmap_request.response->entry_count >= 1);
-  kassert(hhdm_request.response != NULL);
+  request_asserts();
 
-  struct limine_framebuffer *framebuffer =
-      framebuffer_request.response->framebuffers[0];
-
-  fb_set_limine_framebuffer(framebuffer);
-  fb_clear();
+  fb_init();
 
   klog_info("Starting the kernel with %d-bit on %s, welcome!",
             sizeof(void *) * 8, arch_name());
@@ -56,6 +47,6 @@ void kmain(void) {
 cleanup:
   cleanup_drivers();
 
-  kpanic("Kernel panic test");
+  // kpanic("Kernel panic test");
   halt_catchfire();
 }

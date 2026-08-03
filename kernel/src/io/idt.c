@@ -58,7 +58,7 @@ void idt_set_descriptor(uint8_t vector, void *isr, uint8_t attributes) {
   g_idt[vector].reserved = 0;
 }
 
-void c_exception_handler(cpu_registers_t *regs) {
+void c_exception_handler(cpu_registers_x86_t *regs) {
   if (regs->int_no == 14) {
     uint64_t cr2;
     __asm__ volatile("mov %%cr2, %0" : "=r"(cr2));

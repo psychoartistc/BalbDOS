@@ -1,4 +1,5 @@
 #include <limine/requests.h>
+#include <utils/kassert.h>
 
 __attribute__((
     used,
@@ -33,3 +34,17 @@ __attribute__((used,
 
 __attribute__((used, section(".limine_requests_end"))) volatile uint64_t
     limine_requests_end_marker[] = LIMINE_REQUESTS_END_MARKER;
+
+void request_asserts() {
+  kassert(LIMINE_BASE_REVISION_SUPPORTED(limine_base_revision));
+  kassert(framebuffer_request.response != NULL &&
+          framebuffer_request.response->framebuffer_count >= 1);
+  kassert(memmap_request.response != NULL &&
+          memmap_request.response->entry_count >= 1);
+  kassert(hhdm_request.response != NULL);
+  kassert(kernel_address_request.response != NULL &&
+          kernel_address_request.response->physical_base != 0 &&
+          kernel_address_request.response->virtual_base != 0);
+  kassert(rsdp_request.response != NULL &&
+          rsdp_request.response->address != NULL);
+}

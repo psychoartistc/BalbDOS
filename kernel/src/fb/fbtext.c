@@ -1,5 +1,6 @@
 #include <fb/fbtext.h>
 #include <font/cp866.h>
+#include <limine/requests.h>
 
 uint8_t (*g_font)[FBFONT_HEIGHT] = (uint8_t (*)[FBFONT_HEIGHT])g_CP866_F16;
 
@@ -104,4 +105,11 @@ void fb_clear() {
 void fb_puts(const char *c, uint32_t fg, uint32_t bg) {
   while (*c)
     fb_putchar(*c++, fg, bg);
+}
+
+void fb_init() {
+  struct limine_framebuffer *framebuffer =
+      framebuffer_request.response->framebuffers[0];
+  fb_set_limine_framebuffer(framebuffer);
+  fb_clear();
 }

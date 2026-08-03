@@ -85,4 +85,3 @@ g_exception_handlers_table:
 %assign i i+1
 %endrep
 
-

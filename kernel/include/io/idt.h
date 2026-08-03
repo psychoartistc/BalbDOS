@@ -27,7 +27,13 @@ typedef struct {
   uint64_t int_no, error_code;
 
   uint64_t rip, cs, rflags, rsp, ss;
-} __attribute__((packed)) cpu_registers_t;
+} __attribute__((packed)) cpu_registers_x86_t;
+
+typedef struct {
+  uint64_t r15, r14, r13, r12, r11, r10, r9, r8;
+  uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp;
+  uint64_t rip, cs, rflags, rsp, ss;
+} __attribute__((packed)) interrupt_frame_t;
 
 extern struct idt_entry g_idt[256];
 extern struct idt_ptr g_idtr;
@@ -38,7 +44,7 @@ extern const char *g_exception_messages[];
 extern void page_fault_stub(void);
 
 void page_fault_handler(void);
-void c_exception_handler(cpu_registers_t *regs);
+void c_exception_handler(cpu_registers_x86_t *regs);
 void idt_set_descriptor(uint8_t vector, void *isr, uint8_t attributes);
 void idt_init(void);
 
