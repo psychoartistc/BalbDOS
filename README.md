@@ -33,7 +33,6 @@ make run
 ```
 ## TODO:
 - Permissions
-- Driver API
-- ACPI tables
+- AML
 - Time
 
