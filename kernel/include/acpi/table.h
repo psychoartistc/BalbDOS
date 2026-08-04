@@ -1,5 +1,5 @@
-#ifndef ACPI_HEADER_H_
-#define ACPI_HEADER_H_
+#ifndef ACPI_TABLE_H_
+#define ACPI_TABLE_H_
 
 #include <utils/printk.h>
 
@@ -37,5 +37,9 @@ typedef struct {
 } acpi_tables_t;
 
 acpi_tables_t *acpi_get_tables();
+
+void acpi_init();
+
+void acpi_cleanup();
 
 #endif

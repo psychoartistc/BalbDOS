@@ -94,7 +94,11 @@ static void bitmap_init() {
   size_t bytes = div_ceil(s_bitmapFrames, 8);
   bitmap_bootstrap(bytes);
 
-  klog_ok("PMM bitmap initialized!");
+  char buffer[FORMATSIZE_BUFSIZE];
+  formatsize(buffer, bytes);
+
+  klog_ok("PMM bitmap initialized and bootstrapped with %llu (%s) bytes", bytes,
+          buffer);
 }
 
 static void pmm_claim_pages(pmm_filter_function filter) {
@@ -156,9 +160,9 @@ void pmm_init() {
   char buffer2[FORMATSIZE_BUFSIZE];
   formatsize(buffer2, s_totalMemAvailable);
   formatsize(buffer, s_freelistSize * PAGE_SIZE);
-  klog_ok(
-      "PMM Initialized, +%llu new pages (%s physical memory, %s not available)",
-      s_freelistSize, buffer, buffer2);
+  klog_ok("PMM freelist initialized, +%llu new pages (%s physical memory, %s "
+          "not available)",
+          s_freelistSize, buffer, buffer2);
 }
 
 uintptr_t pmm_get_freelist_head() { return s_freelistHead; }
@@ -211,7 +215,11 @@ void pmm_reclaim_bootloader_pages() {
 
   pmm_claim_pages(bootloader_pmm_filter);
 
-  klog_ok("+%llu new pages (reclaimed bootloader)", s_freelistSize - was);
+  char buffer[FORMATSIZE_BUFSIZE];
+  formatsize(buffer, (s_freelistSize - was) * PAGE_SIZE);
+
+  klog_ok("+%llu new pages (%s, reclaimed bootloader)", s_freelistSize - was,
+          buffer);
 }
 
 void pmm_reclaim_acpi_pages() {
@@ -220,7 +228,9 @@ void pmm_reclaim_acpi_pages() {
 
   pmm_claim_pages(acpi_pmm_filter);
 
-  klog_ok("+%llu new pages (reclaimed ACPI)", s_freelistSize - was);
+  char buffer[FORMATSIZE_BUFSIZE];
+  formatsize(buffer, (s_freelistSize - was) * PAGE_SIZE);
+  klog_ok("+%llu new pages (%s, reclaimed ACPI)", s_freelistSize - was, buffer);
 }
 
 uintptr_t pmm_get_pages_count() { return s_freelistSize; }

@@ -8,6 +8,7 @@
 #include <drivers/api.h>
 #include <fb/fbtext.h>
 
+#include <acpi/table.h>
 #include <io/idt.h>
 #include <limine/requests.h>
 #include <panic.h>
@@ -38,12 +39,14 @@ void kmain(void) {
   pmm_init();
   vmm_init();
   allocator_init();
+  acpi_init();
 
   // int b = 1 / 0;
   // klog_info("%d", b);'
 
   init_drivers();
   klog_ok("Drivers initialized");
+
 cleanup:
   cleanup_drivers();
 

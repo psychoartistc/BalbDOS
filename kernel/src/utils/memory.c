@@ -94,8 +94,11 @@ int formatsize(char *to, size_t bytes) {
   size_t whole = bytes / divisor;
   size_t rem = bytes % divisor;
   size_t tenth = (rem * 10) / divisor;
+  if (tenth == 0) {
+    outputted += sprintf_(to, "%zu%c", whole, units[unit]);
+  } else
+    outputted += sprintf_(to, "%zu.%zu%c", whole, tenth, units[unit]);
 
-  outputted += sprintf_(to, "%zu.%zu%c", whole, tenth, units[unit]);
   to[outputted] = '\0';
   return outputted;
 }
