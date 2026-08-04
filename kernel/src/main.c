@@ -12,7 +12,7 @@
 #include <io/idt.h>
 #include <limine/requests.h>
 #include <panic.h>
-#include <utils/archname.h>
+
 #include <utils/kassert.h>
 #include <utils/memory.h>
 #include <utils/printk.h>
@@ -22,8 +22,8 @@ void kmain(void) {
 
   fb_init();
 
-  klog_info("Starting the kernel with %d-bit on %s, welcome!",
-            sizeof(void *) * 8, arch_name());
+  klog_info("Starting the kernel with %d-bit on x86-64, welcome!",
+            sizeof(void *) * 8);
   printk("* Disable debug outputs by undefining ENABLE_DEBUG\n");
   printk("* Play around with the allocator or framebuffer in kmain()\n");
   printk("* Write cool drivers with the driver API\n");

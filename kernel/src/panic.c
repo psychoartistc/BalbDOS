@@ -1,37 +1,17 @@
 #include <fb/fbtext.h>
 #include <panic.h>
-#include <utils/archname.h>
 
-void disable_interrupts(void) {
-#if defined(__x86_64__)
-  __asm__ __volatile__("cli" : : : "memory");
-#elif defined(__aarch64__)
-  __asm__ __volatile__("msr daifset, #2" : : : "memory");
-#elif defined(__riscv)
-  __asm__ __volatile__("csrci sstatus, 2" : : : "memory");
-#elif defined(__loongarch64)
-  __asm__ __volatile__("csrwr $zero, 0x0\n\t" : : : "memory");
-#endif
-}
+void disable_interrupts(void) { __asm__ __volatile__("cli" : : : "memory"); }
 
 void halt_catchfire(void) {
   for (;;) {
-#if defined(__x86_64__)
+
     __asm__("hlt");
-#elif defined(__aarch64__) || defined(__riscv)
-    asm("wfi");
-#elif defined(__loongarch64)
-    asm("idle 0");
-#endif
   }
 }
 
 void dump_registers() {
-
-#if !defined(__x86_64__)
-  printk("* Register dump not supported for current architecture");
-#else
-  struct panic_regs_x86 r;
+  panic_regs_t r;
 
   __asm__ volatile("mov %%rax,%0\n\t"
                    "mov %%rbx,%1\n\t"
@@ -61,7 +41,7 @@ void dump_registers() {
                    :
                    : "rax", "memory");
 
-  printk("\n* Register dump for %s\n", arch_name());
+  printk("\n* Register dump\n");
 
   printk("* RAX: %p  RBX: %p\n", r.rax, r.rbx);
   printk("* RCX: %p  RDX: %p\n", r.rcx, r.rdx);
@@ -72,7 +52,6 @@ void dump_registers() {
   printk("* R12: %p  R13: %p\n", r.r12, r.r13);
   printk("* R14: %p  R15: %p\n", r.r14, r.r15);
   printk("* RIP: %p  RFL: %p\n", r.rip, r.rflags);
-#endif
 }
 
 void kpanic(const char *fmt, ...) {
